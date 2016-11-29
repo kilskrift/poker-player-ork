@@ -11,49 +11,55 @@ namespace Nancy.Simple
 
         public static int BetRequest(GameState gameState)
         {
-            var playerIndex = gameState.in_action;
-            var player = gameState.players[playerIndex];
-            Console.Error.WriteLine("Community_cards: " + gameState.community_cards.Length);
-
-            var handManager = new HandManager();
-            var communityAndhand = player.hole_cards.ToList();
-            communityAndhand.AddRange(gameState.community_cards);
-            var result = handManager.EvaluateHand(communityAndhand);
-
-            //TODO: Set bet:
-            
-            if (result.Hand == Hand.FourOfAKind && gameState.community_cards.Length >= 3)
+            try
             {
-                Console.Error.WriteLine("FourOfAKind, raise " + 201);
-                return 201;
-            }
+                Console.Error.WriteLine("Community_cards: " + gameState.community_cards.Length);
+                var playerIndex = gameState.in_action;
+                var player = gameState.players[playerIndex];
+                var handManager = new HandManager();
+                var communityAndhand = player.hole_cards.ToList();
+                communityAndhand.AddRange(gameState.community_cards);
+                var result = handManager.EvaluateHand(communityAndhand);
 
-            if (result.Hand == Hand.ThreeOfAKind && gameState.community_cards.Length >= 3)
+                //TODO: Set bet:
+
+                if (result.Hand == Hand.FourOfAKind)
+                {
+                    Console.Error.WriteLine("FourOfAKind, raise " + 201);
+                    return 201;
+                }
+
+                if (result.Hand == Hand.ThreeOfAKind)
+                {
+                    Console.Error.WriteLine("ThreeOfAKind, raise " + 151);
+                    return 151;
+                }
+
+                if (result.Hand == Hand.TwoPair)
+                {
+                    Console.Error.WriteLine("TwoPair, min raise " + gameState.minimum_raise);
+                    return gameState.minimum_raise;
+                }
+
+
+                if (result.Hand == Hand.Pair && gameState.community_cards.Length >= 3)
+                {
+                    Console.Error.WriteLine("Pair, min raise " + gameState.minimum_raise);
+                    return gameState.minimum_raise;
+                }
+
+                if (result.Hand == Hand.HighCard && gameState.community_cards.Length >= 3)
+                {
+                    Console.Error.WriteLine("Crap card-");
+                    return 0;
+                }
+
+                return GreedyBet(gameState, player);
+            }
+            catch (Exception ex)
             {
-                Console.Error.WriteLine("ThreeOfAKind, raise " + 151);
-                return 151;
+                return GreedyBet(gameState, gameState.players[gameState.in_action]);
             }
-
-            if (result.Hand == Hand.TwoPair && gameState.community_cards.Length >= 3)
-            {
-                Console.Error.WriteLine("TwoPair, min raise " + gameState.minimum_raise);
-                return gameState.minimum_raise;
-            }
-
-
-            if (result.Hand == Hand.Pair && gameState.community_cards.Length >= 3)
-            {
-                Console.Error.WriteLine("Pair, min raise " + gameState.minimum_raise);
-                return gameState.minimum_raise;
-            }
-
-            if (result.Hand == Hand.HighCard && gameState.community_cards.Length >= 3)
-            {
-                Console.Error.WriteLine("Crap card-");
-                return 0;
-            }
-
-            return GreedyBet(gameState, player);
             //TODO: Use this method to return the value You want to bet
         }
 
