@@ -28,7 +28,12 @@ namespace Nancy.Simple
                 {
                     try
                     {
-                        Console.Error.WriteLine("Fetching rank! :)");
+                        var cardString = "";
+                        foreach (var card in communityAndhand)
+                        {
+                            cardString += " Rank: " + card + " Suit: " + card.suit;
+                        }
+                        Console.Error.WriteLine("Fetching rank! for " + cardString);
                         var rank = GetRanking(communityAndhand);
                         Console.Error.WriteLine("Ranking fetched!: " + rank);
                         if (rank >= 4)
@@ -79,6 +84,11 @@ namespace Nancy.Simple
                     Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
 
                     return gameState.minimum_raise;
+                }
+
+                if (result.Hand == Hand.Crap && player.hole_cards.Length > 1)
+                {
+                    FoldAlways(gameState, player);
                 }
 
                 return FoldAlways(gameState, player);

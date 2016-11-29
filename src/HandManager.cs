@@ -40,7 +40,7 @@ namespace Nancy.Simple
             return new HandResult()
             {
                 Cards = new List<EvaluatedCard>() {evaluatedCard.OrderByDescending(c => c.RankValue).First()},
-                Hand = Hand.HighCard
+                Hand = Hand.Crap
             };
         }
 

@@ -10,6 +10,7 @@
         Straight,
         Flush,
         FullHouse,
-        StraightFlush
+        StraightFlush,
+        Crap
     }
 }
