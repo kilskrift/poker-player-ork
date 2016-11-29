@@ -24,6 +24,21 @@ namespace Nancy.Simple
                 var handManager = new HandManager();
                 var communityAndhand = player.hole_cards.ToList();
 
+                try
+                {
+                    var numberOfActivePlayers = gameState.players.Count(p => p.status == "active");
+                    if (numberOfActivePlayers > 3)
+                    {
+                        //Play defense 
+                        Console.Error.WriteLine("Playing defensively!");
+                        return FoldAlways(gameState, gameState.players[gameState.in_action]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                     Console.Error.WriteLine("Exception in counting players "+ ex);
+                }
+
                 if (gameState.community_cards.Length >= 3)
                 {
                     try
@@ -82,14 +97,14 @@ namespace Nancy.Simple
 
                 if (result.Hand == Hand.Pair)
                 {
-                    Console.Error.WriteLine("Pair, min raise " + gameState.minimum_raise);
+                    Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
+
                     return gameState.minimum_raise;
                 }
 
                 if (result.Hand == Hand.HighCard)
                 {
-                    Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
-
+                    Console.Error.WriteLine("Pair, min raise " + gameState.minimum_raise);
                     return gameState.minimum_raise;
                 }
 
