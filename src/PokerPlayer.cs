@@ -97,14 +97,14 @@ namespace Nancy.Simple
 
                 if (result.Hand == Hand.Pair)
                 {
-                    Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
-
+                    Console.Error.WriteLine("Pair, min raise " + gameState.minimum_raise);
                     return gameState.minimum_raise;
                 }
 
                 if (result.Hand == Hand.HighCard)
                 {
-                    Console.Error.WriteLine("Pair, min raise " + gameState.minimum_raise);
+                    Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
+
                     return gameState.minimum_raise;
                 }
 
