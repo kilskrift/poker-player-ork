@@ -77,6 +77,7 @@
     <Compile Include="MainModule.cs" />
     <Compile Include="App.cs" />
     <Compile Include="PokerPlayer.cs" />
+    <Compile Include="Ranking.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
