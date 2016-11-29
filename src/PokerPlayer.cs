@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace Nancy.Simple
@@ -11,10 +12,11 @@ namespace Nancy.Simple
         public static int BetRequest(GameState gameState)
         {
             //var communityCards = gameState.
-            var bet = 0;
             var playerIndex = gameState.in_action;
             var player = gameState.players[playerIndex];
-            
+
+            Console.Error.WriteLine("Community_cards: " + gameState.community_cards.Length);
+
             if (gameState.community_cards.Length >= 3)
             {
 
