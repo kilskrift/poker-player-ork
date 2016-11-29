@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Team ORK is awesome!
+
+using System;
 using Nancy.Hosting.Self;
 
 namespace Nancy.Simple
