@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using Newtonsoft.Json.Linq;
 using System.Text;
 
@@ -24,6 +25,7 @@ namespace Nancy.Simple
 				switch (action) {
 				case "bet_request":
 				{
+                    TestConnectionToRainMan();
                     return PerformBet2(form);
 				}
 				case "showdown":
@@ -67,6 +69,22 @@ namespace Nancy.Simple
 				}
 			};
 		}
+
+        private static void TestConnectionToRainMan()
+        {
+            string rainManURI = "http://rainman.leanpoker.org/rank";
+            var WebClient = new WebClient();
+
+            var rainManSampleJson = @"{ ""rank"":""5"", ""suit"":""diamonds"" }";
+
+            //http://stackoverflow.com/questions/15091300/posting-json-to-url-via-webclient-in-c-sharp
+
+            var cli = new WebClient();
+            cli.Headers[HttpRequestHeader.ContentType] = "application/json";
+            string rainManResponse = cli.UploadString(rainManURI, rainManSampleJson);
+            Console.Error.WriteLine(rainManResponse);
+        }
+
 
         private static Response PerformBet2(dynamic form)
         {
