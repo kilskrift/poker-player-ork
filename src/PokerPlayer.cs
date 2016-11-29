@@ -26,20 +26,22 @@ namespace Nancy.Simple
                 var communityAndhand = player.hole_cards.ToList();
                 communityAndhand.AddRange(gameState.community_cards);
 
-                //try
-                //{
-                //    var numberOfActivePlayers = gameState.players.Count(p => p.status == "active");
-                //    if (numberOfActivePlayers > 4)
-                //    {
-                //        //Play defense 
-                //        Console.Error.WriteLine("Playing defensively!");
-                //        return FoldAlways(gameState, gameState.players[gameState.in_action]);
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //     Console.Error.WriteLine("Exception in counting players "+ ex);
-                //}
+                var numberOfPresentPlayers = 6;
+                try
+                {
+                    numberOfPresentPlayers = gameState.players.Count(p => p.status == "active");
+                    //numberOfPresentPlayers = 
+                    //if (numberOfActivePlayers > 4)
+                    //{
+                    //    //Play defense 
+                    //    Console.Error.WriteLine("Playing defensively!");
+                    //    return FoldAlways(gameState, gameState.players[gameState.in_action]);
+                    //}
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine("Exception in counting players " + ex);
+                }
 
                 if (FlopIsPresent(gameState))
                 {
@@ -114,32 +116,28 @@ namespace Nancy.Simple
                     if (result.Hand == Hand.Pair && GetHighestCardValue(communityAndhand) == 14)
                     {
                         Console.Error.WriteLine("Two ace!, min raise " + gameState.minimum_raise);
-                        return player.stack - player.bet;
+                        return GoAllIn(player);
                     }
 
                     if (result.Hand == Hand.Pair && GetHighestCardValue(communityAndhand) >= 11)
                     {
                         Console.Error.WriteLine("TwoPair, min raise " + gameState.minimum_raise);
-                        return gameState.current_buy_in - player.bet + gameState.minimum_raise + 50;
+                        return RaiseBet(gameState, player, 50, ScaleWithPlayers(numberOfPresentPlayers));
                     }
 
                     if (result.Hand == Hand.Pair)
                     {
                         Console.Error.WriteLine("TwoPair, min raise " + gameState.minimum_raise);
-                        return gameState.current_buy_in - player.bet + gameState.minimum_raise + 25;
+                        return RaiseBet(gameState, player, 25, ScaleWithPlayers(numberOfPresentPlayers);
                     }
 
 
                     if (result.Hand == Hand.HighCard)
                     {
                         Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
-
-                        return gameState.current_buy_in - player.bet + gameState.minimum_raise;
+                        return RaiseBet(gameState, player, 0);
                     }
                 }
-
-
-
                 
 
                 ////TODO: Set bet:
@@ -178,6 +176,25 @@ namespace Nancy.Simple
                 return FoldAlways(gameState, gameState.players[gameState.in_action]);
             }
             //TODO: Use this method to return the value You want to bet
+        }
+
+        private static int ScaleWithPlayers(int currentActivePlayersCount)
+        {
+            if (currentActivePlayersCount <= 3)
+            {
+                return 2;
+            }
+            return 1;
+        }
+
+        private static int RaiseBet(GameState gameState, GameState.player player, int raise = 0, int scale = 1)
+        {
+            return gameState.current_buy_in - player.bet + gameState.minimum_raise + raise * scale;
+        }
+
+        private static int GoAllIn(GameState.player player)
+        {
+            return player.stack - player.bet;
         }
 
         private static int GetHighestCardValue(IEnumerable<GameState.Card> cards)
