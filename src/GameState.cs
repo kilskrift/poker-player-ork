@@ -14,7 +14,8 @@
         public int orbits { get; set; }
         public int in_action { get; set; }
         public player[] players { get; set; }
-        public object[] community_cards { get; set; }
+        public HoleCard[] community_cards { get; set; }
+
 
         public class player
         {
@@ -24,6 +25,16 @@
             public string version { get; set; }
             public int stack { get; set; }
             public int bet { get; set; }
+            public HoleCard[] hole_cards { get; set; }
         }
+
+
+
+        public class HoleCard
+        {
+            public string rank { get; set; }
+            public string suit { get; set; }
+        }
+
     }
 }
