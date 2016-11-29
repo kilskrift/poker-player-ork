@@ -46,7 +46,7 @@ namespace Nancy.Simple
                         var cardString = "";
                         foreach (var card in communityAndhand)
                         {
-                            cardString += " Rank: " + card + " Suit: " + card.suit;
+                            cardString += " Rank: " + card.rank + " Suit: " + card.suit;
                         }
                         Console.Error.WriteLine("Fetching rank! for " + cardString);
                         var rank = GetRanking(communityAndhand);
