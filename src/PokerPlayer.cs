@@ -48,12 +48,58 @@ namespace Nancy.Simple
                         LogCommunityAndHand(communityAndhand);
 
                         var rank = GetRainManRanking(communityAndhand);
-
                         Console.Error.WriteLine("Ranking fetched!: " + rank);
+                        if (rank >= 6)
+                        {
+
+                            //All in!
+                            var chipsRemaining = player.stack - player.bet;
+                            Console.Error.WriteLine("All in: " + chipsRemaining);
+                            return chipsRemaining;
+                        }
 
                         if (rank >= 4)
                         {
+                            //Raise
+                            Console.Error.WriteLine("Got rank 4 or better bet: " + 150);
                             return 150;
+                        }
+
+                        if (rank == 3)
+                        {
+                            //call? Upto some limit
+                            //Should not go higher than 95 in total
+                            if (player.bet > 95 || gameState.current_buy_in > 95)
+                            {
+                                return 0;
+                            }
+                            Console.Error.WriteLine("Got rank 3 bet: " + 95);
+                            return 95;
+                        }
+
+                        if (rank == 2)
+                        {
+                            //Call upto limit
+                            // should not go higher than 55 in total
+
+                            if (player.bet > 55 || gameState.current_buy_in > 55)
+                            {
+                                return 0;
+                            }
+                            Console.Error.WriteLine("Got rank 2 bet: " + 55);
+                            return 55;
+                        }
+
+                        if (rank == 1)
+                        {
+                            //Call upto limit
+                            // Should not go higher than 25 in total
+                            if (player.bet > 25 || gameState.current_buy_in > 25)
+                            {
+                                return 0;
+                            }
+                            Console.Error.WriteLine("Got pairs bet: " + 25);
+                            return 25;
                         }
 
                     }
