@@ -2,3 +2,6 @@ bin/
 obj/
 .DS_Store
 *.userprefs
+/packages/Newtonsoft.Json.6.0.8/lib
+/packages/Newtonsoft.Json.6.0.8/tools
+/packages/Newtonsoft.Json.6.0.8
