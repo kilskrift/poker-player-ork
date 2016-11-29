@@ -22,7 +22,9 @@ namespace Nancy.Simple
                 var playerIndex = gameState.in_action;
                 var player = gameState.players[playerIndex];
                 var handManager = new HandManager();
+
                 var communityAndhand = player.hole_cards.ToList();
+                communityAndhand.AddRange(gameState.community_cards);
 
                 if (gameState.community_cards.Length >= 3)
                 {
@@ -34,8 +36,11 @@ namespace Nancy.Simple
                             cardString += " Rank: " + card + " Suit: " + card.suit;
                         }
                         Console.Error.WriteLine("Fetching rank! for " + cardString);
-                        var rank = GetRanking(communityAndhand);
+
+                        var rank = GetRainManRanking(communityAndhand);
+
                         Console.Error.WriteLine("Ranking fetched!: " + rank);
+
                         if (rank >= 4)
                         {
                             return 150;
@@ -44,12 +49,10 @@ namespace Nancy.Simple
                     }
                     catch (Exception exception)
                     {
-                        Console.Error.WriteLine("exception in GetRanking "+ exception);
+                        Console.Error.WriteLine("exception in GetRainManRanking "+ exception);
                     }
-
                 }
 
-                communityAndhand.AddRange(gameState.community_cards);
                 var result = handManager.EvaluateHand(communityAndhand);
 
                 //TODO: Set bet:
@@ -188,7 +191,7 @@ namespace Nancy.Simple
         }
 
 
-        public static int GetRanking(List<GameState.Card> cards)
+        public static int GetRainManRanking(List<GameState.Card> cards)
         {
             if (cards.Count < 5)
             {

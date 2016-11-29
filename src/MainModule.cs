@@ -88,6 +88,7 @@ namespace Nancy.Simple
             Console.Error.WriteLine("My bet index: " + gameState.bet_index);
 
             var bet = PokerPlayer.BetRequest(gameState).ToString();
+
             var betBytes = Encoding.UTF8.GetBytes(bet);
             var response = new Response
             {
