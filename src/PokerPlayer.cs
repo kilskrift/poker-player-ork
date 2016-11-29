@@ -26,11 +26,27 @@ namespace Nancy.Simple
 
                 if (gameState.community_cards.Length >= 3)
                 {
-                    var rank = GetRanking(communityAndhand);
-                    if (rank >= 4)
+                    try
                     {
-                        return 150;
+                        var cardString = "";
+                        foreach (var card in communityAndhand)
+                        {
+                            cardString += " Rank: " + card + " Suit: " + card.suit;
+                        }
+                        Console.Error.WriteLine("Fetching rank! for " + cardString);
+                        var rank = GetRanking(communityAndhand);
+                        Console.Error.WriteLine("Ranking fetched!: " + rank);
+                        if (rank >= 4)
+                        {
+                            return 150;
+                        }
+
                     }
+                    catch (Exception exception)
+                    {
+                        Console.Error.WriteLine("exception in GetRanking "+ exception);
+                    }
+
                 }
 
                 communityAndhand.AddRange(gameState.community_cards);
@@ -68,6 +84,11 @@ namespace Nancy.Simple
                     Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
 
                     return gameState.minimum_raise;
+                }
+
+                if (result.Hand == Hand.Crap && player.hole_cards.Length > 1)
+                {
+                    FoldAlways(gameState, player);
                 }
 
                 return FoldAlways(gameState, player);
@@ -168,8 +189,13 @@ namespace Nancy.Simple
         }
 
 
-        public static int GetRanking(List<GameState.HoleCard> cards)
+        public static int GetRanking(List<GameState.Card> cards)
         {
+            if (cards.Count < 5)
+            {
+                return 0;
+            }
+
             string rainManURI = "http://rainman.leanpoker.org/rank";
             using (var webClient = new WebClient())
             {

@@ -7,7 +7,7 @@ namespace Nancy.Simple
 {
     public class HandManager
     {
-        public HandResult EvaluateHand(IEnumerable<GameState.HoleCard> cards)
+        public HandResult EvaluateHand(IEnumerable<GameState.Card> cards)
         {
             var evaluatedCard = cards.Select(c => new EvaluatedCard(c));
             var maxFourOfAKind = FourOfAKind(evaluatedCard);
@@ -40,7 +40,7 @@ namespace Nancy.Simple
             return new HandResult()
             {
                 Cards = new List<EvaluatedCard>() {evaluatedCard.OrderByDescending(c => c.RankValue).First()},
-                Hand = Hand.HighCard
+                Hand = Hand.Crap
             };
         }
 
