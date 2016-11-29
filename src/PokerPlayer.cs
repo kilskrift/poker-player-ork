@@ -85,7 +85,7 @@ namespace Nancy.Simple
             }
             else
             {
-                return bet;
+                return 3;
             }
             //TODO: Use this method to return the value You want to bet
         }
