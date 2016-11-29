@@ -64,7 +64,7 @@ namespace Nancy.Simple
                         {
                             //Raise
                             Console.Error.WriteLine("Got rank 4 or better bet: " + 150);
-                            return 150;
+                            return RaiseBet(gameState, player, 100, ScaleWithPlayers(numberOfPresentPlayers));
                         }
 
                         if (rank == 3)
@@ -76,7 +76,8 @@ namespace Nancy.Simple
                                 return 0;
                             }
                             Console.Error.WriteLine("Got rank 3 bet: " + 95);
-                            return 95;
+                            return RaiseBet(gameState, player, 50, ScaleWithPlayers(numberOfPresentPlayers));
+
                         }
 
                         if (rank == 2)
@@ -89,7 +90,7 @@ namespace Nancy.Simple
                                 return 0;
                             }
                             Console.Error.WriteLine("Got rank 2 bet: " + 55);
-                            return 55;
+                            return RaiseBet(gameState, player, 25, ScaleWithPlayers(numberOfPresentPlayers));
                         }
 
                         if (rank == 1)
@@ -101,7 +102,8 @@ namespace Nancy.Simple
                                 return 0;
                             }
                             Console.Error.WriteLine("Got pairs bet: " + 25);
-                            return 25;
+                            return RaiseBet(gameState, player, 10, ScaleWithPlayers(numberOfPresentPlayers));
+
                         }
 
                     }
