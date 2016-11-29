@@ -15,11 +15,23 @@ namespace Nancy.Simple
             var player = gameState.players[playerIndex];
             Console.Error.WriteLine("Community_cards: " + gameState.community_cards.Length);
 
-            var handManager = new HandManager();
-            var communityAndhand = player.hole_cards.ToList();
-            communityAndhand.AddRange(gameState.community_cards);
-            var result = handManager.EvaluateHand(communityAndhand);
-            
+            //var handManager = new HandManager();
+            //var communityAndhand = player.hole_cards.ToList();
+            //communityAndhand.AddRange(gameState.community_cards);
+            //var result = handManager.EvaluateHand(communityAndhand);
+
+            //TODO: Set bet:
+            //if (result.Hand == Hand.HighCard && gameState.community_cards.Length >= 3)
+            //{
+            //    //Crap cards.
+            //    return 0;
+            //}
+
+            //if (result.Hand == Hand.HighCard && gameState.community_cards.Length >= 3)
+            //{
+            //    Console.Error.WriteLine("Crap card-");
+            //    return 0;
+            //}
 
             return GreedyBet(gameState, player);
             //TODO: Use this method to return the value You want to bet
