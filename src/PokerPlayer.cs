@@ -177,8 +177,13 @@ namespace Nancy.Simple
         }
 
 
-        public static int GetRanking(List<GameState.HoleCard> cards)
+        public static int GetRanking(List<GameState.Card> cards)
         {
+            if (cards.Count < 5)
+            {
+                return 0;
+            }
+
             string rainManURI = "http://rainman.leanpoker.org/rank";
             using (var webClient = new WebClient())
             {

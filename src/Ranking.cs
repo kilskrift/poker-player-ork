@@ -12,7 +12,7 @@ namespace Nancy.Simple
         public int second_value { get; set; }
         public List<int> kickers { get; set; }
         public List<CardsUsed> cards_used { get; set; }
-        public List<GameState.HoleCard> cards { get; set; }
+        public List<GameState.Card> cards { get; set; }
     }
 
     public class CardsUsed

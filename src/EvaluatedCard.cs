@@ -6,7 +6,7 @@ namespace Nancy.Simple
     {
         private readonly int _rankValue;
         private readonly string _suitValue;
-        public EvaluatedCard(GameState.HoleCard card)
+        public EvaluatedCard(GameState.Card card)
         {
             _rankValue = ParseRank(card.rank);
             _suitValue = card.suit;
