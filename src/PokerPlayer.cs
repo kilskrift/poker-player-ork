@@ -38,7 +38,7 @@ namespace Nancy.Simple
                         return 13;
                     }
                     //
-                    return 0;
+                    return 3;
                 }
 
                 if (gameState.community_cards.Length == 4)
@@ -58,7 +58,7 @@ namespace Nancy.Simple
                         return 14;
                     }
                     //
-                    return 0;
+                    return 4;
                 }
 
                 if (gameState.community_cards.Length == 5)
@@ -78,10 +78,10 @@ namespace Nancy.Simple
                         return 105;
                     }
                     //
-                    return 0;
+                    return 5;
                 }
 
-                return bet;
+                return 1;
             }
             else
             {
