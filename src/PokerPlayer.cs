@@ -30,12 +30,12 @@ namespace Nancy.Simple
                 {
                     if (ourGroups.Count() == 2)
                     {
-                        return 150;
+                        return 153;
                     }
 
                     if (ourGroups.Count() == 3)
                     {
-                        return 10;
+                        return 13;
                     }
                     //
                     return 0;
@@ -45,17 +45,17 @@ namespace Nancy.Simple
                 {
                     if (ourGroups.Count() == 2)
                     {
-                        return 150;
+                        return 145;
                     }
 
                     if (ourGroups.Count() == 3)
                     {
-                        return 150;
+                        return 114;
                     }
 
                     if (ourGroups.Count() == 4)
                     {
-                        return 10;
+                        return 14;
                     }
                     //
                     return 0;
@@ -65,17 +65,17 @@ namespace Nancy.Simple
                 {
                     if (ourGroups.Count() == 2)
                     {
-                        return 150;
+                        return 155;
                     }
 
                     if (ourGroups.Count() == 3)
                     {
-                        return 150;
+                        return 145;
                     }
 
                     if (ourGroups.Count() == 4)
                     {
-                        return 100;
+                        return 105;
                     }
                     //
                     return 0;
