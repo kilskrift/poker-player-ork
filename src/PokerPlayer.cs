@@ -28,7 +28,9 @@ namespace Nancy.Simple
                 {
                     try
                     {
+                        Console.Error.WriteLine("Fetching rank! :)");
                         var rank = GetRanking(communityAndhand);
+                        Console.Error.WriteLine("Ranking fetched!: " + rank);
                         if (rank >= 4)
                         {
                             return 150;
