@@ -26,11 +26,20 @@ namespace Nancy.Simple
 
                 if (gameState.community_cards.Length >= 3)
                 {
-                    var rank = GetRanking(communityAndhand);
-                    if (rank >= 4)
+                    try
                     {
-                        return 150;
+                        var rank = GetRanking(communityAndhand);
+                        if (rank >= 4)
+                        {
+                            return 150;
+                        }
+
                     }
+                    catch (Exception exception)
+                    {
+                        Console.Error.WriteLine("exception in GetRanking "+ exception);
+                    }
+
                 }
 
                 communityAndhand.AddRange(gameState.community_cards);
