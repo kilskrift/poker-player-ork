@@ -26,20 +26,20 @@ namespace Nancy.Simple
                 var communityAndhand = player.hole_cards.ToList();
                 communityAndhand.AddRange(gameState.community_cards);
 
-                try
-                {
-                    var numberOfActivePlayers = gameState.players.Count(p => p.status == "active");
-                    if (numberOfActivePlayers > 3)
-                    {
-                        //Play defense 
-                        Console.Error.WriteLine("Playing defensively!");
-                        return FoldAlways(gameState, gameState.players[gameState.in_action]);
-                    }
-                }
-                catch (Exception ex)
-                {
-                     Console.Error.WriteLine("Exception in counting players "+ ex);
-                }
+                //try
+                //{
+                //    var numberOfActivePlayers = gameState.players.Count(p => p.status == "active");
+                //    if (numberOfActivePlayers > 4)
+                //    {
+                //        //Play defense 
+                //        Console.Error.WriteLine("Playing defensively!");
+                //        return FoldAlways(gameState, gameState.players[gameState.in_action]);
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //     Console.Error.WriteLine("Exception in counting players "+ ex);
+                //}
 
                 if (FlopIsPresent(gameState))
                 {
@@ -108,46 +108,66 @@ namespace Nancy.Simple
                         Console.Error.WriteLine("exception in GetRainManRanking "+ exception);
                     }
                 }
-
-                var result = handManager.EvaluateHand(communityAndhand);
-
-                //TODO: Set bet:
-
-                if (result.Hand == Hand.FourOfAKind)
+                else
                 {
-                    Console.Error.WriteLine("FourOfAKind, raise " + 201);
-                    return 201;
+                    var result = handManager.EvaluateHand(communityAndhand);
+                    if (result.Hand == Hand.Pair && GetHighestCardValue(communityAndhand) == 14)
+                    {
+                        Console.Error.WriteLine("Two ace!, min raise " + gameState.minimum_raise);
+                        return player.stack - player.bet;
+                    }
+
+                    if (result.Hand == Hand.Pair && GetHighestCardValue(communityAndhand) >= 11)
+                    {
+                        Console.Error.WriteLine("TwoPair, min raise " + gameState.minimum_raise);
+                        return gameState.current_buy_in - player.bet + gameState.minimum_raise + 50;
+                    }
+
+                    if (result.Hand == Hand.Pair)
+                    {
+                        Console.Error.WriteLine("TwoPair, min raise " + gameState.minimum_raise);
+                        return gameState.current_buy_in - player.bet + gameState.minimum_raise + 25;
+                    }
+
+
+                    if (result.Hand == Hand.HighCard)
+                    {
+                        Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
+
+                        return gameState.current_buy_in - player.bet + gameState.minimum_raise;
+                    }
                 }
 
-                if (result.Hand == Hand.ThreeOfAKind)
-                {
-                    Console.Error.WriteLine("ThreeOfAKind, raise " + 151);
-                    return 151;
-                }
 
-                if (result.Hand == Hand.TwoPair)
-                {
-                    Console.Error.WriteLine("TwoPair, min raise " + gameState.minimum_raise);
-                    return gameState.minimum_raise;
-                }
 
-                if (result.Hand == Hand.HighCard && gameState.community_cards.Length >= 3)
-                {
-                    Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
+                
 
-                    return gameState.minimum_raise;
-                }
+                ////TODO: Set bet:
 
-                if (result.Hand == Hand.Pair && gameState.community_cards.Length >= 3)
-                {
-                    Console.Error.WriteLine("Pair, min raise " + gameState.minimum_raise);
-                    return gameState.minimum_raise;
-                }
+                //if (result.Hand == Hand.FourOfAKind)
+                //{
+                //    Console.Error.WriteLine("FourOfAKind, raise " + 201);
+                //    return 201;
+                //}
 
-                if (result.Hand == Hand.Crap && player.hole_cards.Length > 1)
-                {
-                    FoldAlways(gameState, player);
-                }
+                //if (result.Hand == Hand.ThreeOfAKind)
+                //{
+                //    Console.Error.WriteLine("ThreeOfAKind, raise " + 151);
+                //    return 151;
+                //}
+
+                
+
+                //if (result.Hand == Hand.Pair && gameState.community_cards.Length >= 3)
+                //{
+                //    Console.Error.WriteLine("Pair, min raise " + gameState.minimum_raise);
+                //    return gameState.minimum_raise;
+                //}
+
+                //if (result.Hand == Hand.Crap && player.hole_cards.Length > 1)
+                //{
+                //    FoldAlways(gameState, player);
+                //}
 
                 return FoldAlways(gameState, player);
             }
@@ -158,6 +178,12 @@ namespace Nancy.Simple
                 return FoldAlways(gameState, gameState.players[gameState.in_action]);
             }
             //TODO: Use this method to return the value You want to bet
+        }
+
+        private static int GetHighestCardValue(IEnumerable<GameState.Card> cards)
+        {
+            var evaluatedCard = cards.Select(c => new EvaluatedCard(c));
+            return evaluatedCard.Max(y => y.RankValue);
         }
 
         private static void LogCommunityAndHand(List<GameState.Card> communityAndhand)

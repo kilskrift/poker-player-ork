@@ -98,6 +98,8 @@ namespace Nancy.Simple
             }
             return new List<EvaluatedCard>();
         }
+
+       
     }
 
     public class HandResult
