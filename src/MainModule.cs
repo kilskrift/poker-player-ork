@@ -24,7 +24,7 @@ namespace Nancy.Simple
 				switch (action) {
 				case "bet_request":
 				{
-                    return PerformBet(form);
+                    return PerformBet2(form);
 				}
 				case "showdown":
 				{
