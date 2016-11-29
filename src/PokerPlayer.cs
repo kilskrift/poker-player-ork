@@ -33,16 +33,23 @@ namespace Nancy.Simple
                         {
                             cardString += " Rank: " + card + " Suit: " + card.suit;
                         }
+
                         Console.Error.WriteLine("Fetching rank! for " + cardString);
+
                         var rank = GetRanking(communityAndhand);
+
                         Console.Error.WriteLine("Ranking fetched!: " + rank);
+
                         if (rank >= 4)
                         {
                             return 150;
                         }
 
                     }
+
+
                     catch (Exception exception)
+
                     {
                         Console.Error.WriteLine("exception in GetRanking "+ exception);
                     }
@@ -79,7 +86,7 @@ namespace Nancy.Simple
                     return gameState.minimum_raise;
                 }
 
-                if (result.Hand == Hand.HighCard || player.hole_cards.Length == 1)
+                if (result.Hand == Hand.HighCard)
                 {
                     Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
 
@@ -104,81 +111,7 @@ namespace Nancy.Simple
 
         private static int FoldAlways(GameState gameState, GameState.player player)
         {
-            //if (gameState.community_cards.Length >= 3)
-            //{
-            //    var ourCards = player.hole_cards;
-            //    var ourCardList = ourCards.ToList();
-            //    ourCardList.AddRange(gameState.community_cards);
-
-            //    var ourRanks = ourCardList.Select(y => y.rank);
-            //    var ourGroups = ourRanks.GroupBy(y => y);
-
-
-            //    Console.Error.WriteLine("exception, using FoldAlways Instead" + ex);
-
-            //    if (gameState.community_cards.Length == 3)
-            //    {
-            //        if (ourGroups.Count() == 2)
-            //        {
-            //            return 153;
-            //        }
-
-            //        if (ourGroups.Count() == 3)
-            //        {
-            //            return 13;
-            //        }
-            //        //
-            //        return 3;
-            //    }
-
-            //    if (gameState.community_cards.Length == 4)
-            //    {
-            //        if (ourGroups.Count() == 2)
-            //        {
-            //            return 145;
-            //        }
-
-            //        if (ourGroups.Count() == 3)
-            //        {
-            //            return 114;
-            //        }
-
-            //        if (ourGroups.Count() == 4)
-            //        {
-            //            return 14;
-            //        }
-            //        //
-            //        return 4;
-            //    }
-
-            //    if (gameState.community_cards.Length == 5)
-            //    {
-            //        if (ourGroups.Count() == 2)
-            //        {
-            //            return 155;
-            //        }
-
-            //        if (ourGroups.Count() == 3)
-            //        {
-            //            return 145;
-            //        }
-
-            //        if (ourGroups.Count() == 4)
-            //        {
-            //            return 105;
-            //        }
-            //        //
-            //        return 5;
-            //    }
-
-            //    return 1;
-            //}
-            //else
-            //{
-            //    Console.Error.WriteLine("FoldAlways - minimum_raise: "+ gameState.minimum_raise);
-
-            //    return gameState.minimum_raise;
-            //}
+            
             Console.Error.WriteLine("FoldAlways - fold always: ");
             return 0;
         }

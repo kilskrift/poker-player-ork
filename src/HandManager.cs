@@ -91,7 +91,7 @@ namespace Nancy.Simple
             var orderedRankGroups = cards.GroupBy(g => g.RankValue).OrderByDescending(g => g.Key);
             var highestCard = cards.Max(y => y.RankValue);
 
-            if (highestCard >= 11)
+            if (highestCard >= 12)
             {
                 var highCard = orderedRankGroups.First();
                 return highCard.ToList();
