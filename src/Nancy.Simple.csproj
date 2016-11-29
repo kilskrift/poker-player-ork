@@ -70,7 +70,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EvaluatedCard.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="Hand.cs" />
+    <Compile Include="HandManager.cs" />
     <Compile Include="MainModule.cs" />
     <Compile Include="App.cs" />
     <Compile Include="PokerPlayer.cs" />

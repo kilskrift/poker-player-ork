@@ -11,15 +11,24 @@ namespace Nancy.Simple
 
         public static int BetRequest(GameState gameState)
         {
-            //var communityCards = gameState.
             var playerIndex = gameState.in_action;
             var player = gameState.players[playerIndex];
-
             Console.Error.WriteLine("Community_cards: " + gameState.community_cards.Length);
 
+            var handManager = new HandManager();
+            var communityAndhand = player.hole_cards.ToList();
+            communityAndhand.AddRange(gameState.community_cards);
+            var result = handManager.EvaluateHand(communityAndhand);
+            
+
+            return GreedyBet(gameState, player);
+            //TODO: Use this method to return the value You want to bet
+        }
+
+        private static int GreedyBet(GameState gameState, GameState.player player)
+        {
             if (gameState.community_cards.Length >= 3)
             {
-
                 var ourCards = player.hole_cards;
                 var ourCardList = ourCards.ToList();
                 ourCardList.AddRange(gameState.community_cards);
@@ -89,7 +98,6 @@ namespace Nancy.Simple
             {
                 return gameState.minimum_raise;
             }
-            //TODO: Use this method to return the value You want to bet
         }
 
 
