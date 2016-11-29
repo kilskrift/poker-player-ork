@@ -24,19 +24,7 @@ namespace Nancy.Simple
 				switch (action) {
 				case "bet_request":
 				{
-                    var json = JObject.Parse (form ["game_state"]);
-                    GameState gameState = json.ToObject<GameState>();
-				    Console.Error.WriteLine("My bet index: " + gameState.bet_index);
-                    //gameState.
-                    //var json = JObject.Parse (form ["game_state"]);
-					var bet = PokerPlayer.BetRequest (json).ToString ();
-					var betBytes = Encoding.UTF8.GetBytes (bet);
-					var response = new Response {
-						ContentType = "text/plain",
-						Contents = s => s.Write (betBytes, 0, betBytes.Length),
-						StatusCode = HttpStatusCode.OK
-					};
-					return response;
+                    return PerformBet(form);
 				}
 				case "showdown":
 				{
@@ -79,5 +67,39 @@ namespace Nancy.Simple
 				}
 			};
 		}
+
+        private static Response PerformBet2(dynamic form)
+        {
+            var json = JObject.Parse(form["game_state"]);
+            GameState gameState = json.ToObject<GameState>();
+            Console.Error.WriteLine("My bet index: " + gameState.bet_index);
+
+            var bet = PokerPlayer.BetRequest(json).ToString();
+            var betBytes = Encoding.UTF8.GetBytes(bet);
+            var response = new Response
+            {
+                ContentType = "text/plain",
+                Contents = s => s.Write(betBytes, 0, betBytes.Length),
+                StatusCode = HttpStatusCode.OK
+            };
+            return response;
+        }
+
+        private static Response PerformBet(dynamic form)
+	    {
+	        var json = JObject.Parse(form["game_state"]);
+	        GameState gameState = json.ToObject<GameState>();
+	        Console.Error.WriteLine("My bet index: " + gameState.bet_index);
+
+	        var bet = PokerPlayer.BetRequest(json).ToString();
+	        var betBytes = Encoding.UTF8.GetBytes(bet);
+	        var response = new Response
+	        {
+	            ContentType = "text/plain",
+	            Contents = s => s.Write(betBytes, 0, betBytes.Length),
+	            StatusCode = HttpStatusCode.OK
+	        };
+	        return response;
+	    }
 	}
 }
