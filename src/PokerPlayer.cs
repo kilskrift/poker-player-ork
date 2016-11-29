@@ -112,6 +112,7 @@ namespace Nancy.Simple
                 }
                 else
                 {
+                    LogCommunityAndHand(communityAndhand);
                     var result = handManager.EvaluateHand(communityAndhand);
                     if (result.Hand == Hand.Pair && GetHighestCardValue(communityAndhand) == 14)
                     {
@@ -128,9 +129,8 @@ namespace Nancy.Simple
                     if (result.Hand == Hand.Pair)
                     {
                         Console.Error.WriteLine("TwoPair, min raise " + gameState.minimum_raise);
-                        return RaiseBet(gameState, player, 25, ScaleWithPlayers(numberOfPresentPlayers);
+                        return RaiseBet(gameState, player, 25, ScaleWithPlayers(numberOfPresentPlayers));
                     }
-
 
                     if (result.Hand == Hand.HighCard)
                     {
