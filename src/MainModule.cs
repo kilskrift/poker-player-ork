@@ -25,7 +25,7 @@ namespace Nancy.Simple
 				switch (action) {
 				case "bet_request":
 				{
-                    TestConnectionToRainMan();
+                    //TestConnectionToRainMan();
                     return PerformBet2(form);
 				}
 				case "showdown":
