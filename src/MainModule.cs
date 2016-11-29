@@ -18,13 +18,17 @@ namespace Nancy.Simple
 				return response;
 			};
 
-			Post ["/"] = parameters => {
+            Post ["/"] = parameters => {
 				var form = Request.Form;
 				string action = form ["action"];
 				switch (action) {
 				case "bet_request":
 				{
-					var json = JObject.Parse (form ["game_state"]);
+                    var json = JObject.Parse (form ["game_state"]);
+                    GameState gameState = json.ToObject<GameState>();
+				    Console.Error.WriteLine("My bet index: " + gameState.bet_index);
+                    //gameState.
+                    //var json = JObject.Parse (form ["game_state"]);
 					var bet = PokerPlayer.BetRequest (json).ToString ();
 					var betBytes = Encoding.UTF8.GetBytes (bet);
 					var response = new Response {
