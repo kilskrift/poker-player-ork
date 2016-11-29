@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Nancy.Simple
@@ -18,6 +23,16 @@ namespace Nancy.Simple
                 var player = gameState.players[playerIndex];
                 var handManager = new HandManager();
                 var communityAndhand = player.hole_cards.ToList();
+
+                if (gameState.community_cards.Length >= 3)
+                {
+                    var rank = GetRanking(communityAndhand);
+                    if (rank >= 4)
+                    {
+                        return 150;
+                    }
+                }
+
                 communityAndhand.AddRange(gameState.community_cards);
                 var result = handManager.EvaluateHand(communityAndhand);
 
@@ -152,6 +167,39 @@ namespace Nancy.Simple
             return 0;
         }
 
+
+        public static int GetRanking(List<GameState.HoleCard> cards)
+        {
+            string rainManURI = "http://rainman.leanpoker.org/rank";
+            using (var webClient = new WebClient())
+            {
+                var cardsData = JsonConvert.SerializeObject(cards);
+                var cardsDataWithPrefix = "cards=" + cardsData;
+                webClient.Headers["Content-Type"] = "application/x-www-form-urlencoded";
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(rainManURI);
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+
+                string postData = cardsDataWithPrefix;
+                ASCIIEncoding encoding = new ASCIIEncoding();
+                byte[] byte1 = encoding.GetBytes(postData);
+                request.ContentLength = byte1.Length;
+                Stream newStream = request.GetRequestStream();
+                newStream.Write(byte1, 0, byte1.Length);
+
+                var response = request.GetResponse();
+
+                var stream = response.GetResponseStream();
+                var sr = new StreamReader(stream);
+                var content = sr.ReadToEnd();
+                var rankObject = JsonConvert.DeserializeObject<Ranking>(content);
+                newStream.Close();
+                response.Close();
+                Console.Error.WriteLine("My ranking: " + rankObject.rank);
+                return rankObject.rank;
+            }
+        }
 
         public static int BetRequest(JObject gameState)
         {
