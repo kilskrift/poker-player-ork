@@ -50,14 +50,17 @@ namespace Nancy.Simple
 
                 if (result.Hand == Hand.HighCard && gameState.community_cards.Length >= 3)
                 {
-                    Console.Error.WriteLine("Crap card-");
-                    return 0;
+                    Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
+
+                    return gameState.minimum_raise;
                 }
 
                 return GreedyBet(gameState, player);
             }
             catch (Exception ex)
             {
+                Console.Error.WriteLine("exception, using GreedyBet Instead"+ ex);
+
                 return GreedyBet(gameState, gameState.players[gameState.in_action]);
             }
             //TODO: Use this method to return the value You want to bet
@@ -134,8 +137,15 @@ namespace Nancy.Simple
             }
             else
             {
+                Console.Error.WriteLine("GreedyBet - minimum_raise"+ gameState.minimum_raise);
+
                 return gameState.minimum_raise;
             }
+        }
+
+        public static int Fold()
+        {
+            return 0;
         }
 
 

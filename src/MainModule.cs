@@ -28,7 +28,19 @@ namespace Nancy.Simple
                     //TestConnectionToRainMan();
                     return PerformBet2(form);
 				}
-				case "showdown":
+
+                    /*
+                     
+                    Showdown
+                     This action is called at the end of each round. The game state document is sent, 
+                     but this time the hole cards of the opponents are also included if those cards were revealed during showdown.
+                     
+                    The player frameworks should define a "showdown" void method in the Player class (or a similar construct). When the action 
+                    is called, it should be delegated to this method. This method should be changed by teams to implement learning algorithms.
+                    The string returned is not used.
+                    
+                     *  */
+                    case "showdown":
 				{
 					var json = JObject.Parse (form ["game_state"]);
 					PokerPlayer.ShowDown (json);
