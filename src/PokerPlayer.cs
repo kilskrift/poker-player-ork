@@ -72,17 +72,16 @@ namespace Nancy.Simple
                     return gameState.minimum_raise;
                 }
 
-
-                if (result.Hand == Hand.Pair && gameState.community_cards.Length >= 3)
-                {
-                    Console.Error.WriteLine("Pair, min raise " + gameState.minimum_raise);
-                    return gameState.minimum_raise;
-                }
-
                 if (result.Hand == Hand.HighCard && gameState.community_cards.Length >= 3)
                 {
                     Console.Error.WriteLine("High card, check-" + gameState.minimum_raise);
 
+                    return gameState.minimum_raise;
+                }
+
+                if (result.Hand == Hand.Pair && gameState.community_cards.Length >= 3)
+                {
+                    Console.Error.WriteLine("Pair, min raise " + gameState.minimum_raise);
                     return gameState.minimum_raise;
                 }
 
