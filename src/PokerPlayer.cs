@@ -85,7 +85,7 @@ namespace Nancy.Simple
             }
             else
             {
-                return 3;
+                return gameState.minimum_raise;
             }
             //TODO: Use this method to return the value You want to bet
         }
