@@ -41,16 +41,11 @@ namespace Nancy.Simple
                      Console.Error.WriteLine("Exception in counting players "+ ex);
                 }
 
-                if (gameState.community_cards.Length >= 3)
+                if (FlopIsPresent(gameState))
                 {
                     try
                     {
-                        var cardString = "";
-                        foreach (var card in communityAndhand)
-                        {
-                            cardString += " Rank: " + card.rank + " Suit: " + card.suit;
-                        }
-                        Console.Error.WriteLine("Fetching rank! for " + cardString);
+                        LogCommunityAndHand(communityAndhand);
 
                         var rank = GetRainManRanking(communityAndhand);
 
@@ -117,6 +112,21 @@ namespace Nancy.Simple
                 return FoldAlways(gameState, gameState.players[gameState.in_action]);
             }
             //TODO: Use this method to return the value You want to bet
+        }
+
+        private static void LogCommunityAndHand(List<GameState.Card> communityAndhand)
+        {
+            var cardString = "";
+            foreach (var card in communityAndhand)
+            {
+                cardString += " Rank: " + card.rank + " Suit: " + card.suit;
+            }
+            Console.Error.WriteLine("Fetching rank! for " + cardString);
+        }
+
+        private static bool FlopIsPresent(GameState gameState)
+        {
+            return gameState.community_cards.Length >= 3;
         }
 
         private static int FoldAlways(GameState gameState, GameState.player player)
